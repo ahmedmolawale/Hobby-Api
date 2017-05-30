@@ -42,7 +42,7 @@ export class Server {
     }
 
     public config(): void {
-        const MONGODB_CONNECTION: string = "mongodb://127.0.0.1:27017/hobbyApp";
+        const MONGODB_CONNECTION: string = "mongodb://stackode:Agptwmdc@ds157631.mlab.com:57631/hobbyapp";
 
         //use logger middlware
         this.app.use(logger("dev"));

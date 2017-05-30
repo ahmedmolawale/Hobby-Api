@@ -24,7 +24,7 @@ class Server {
         this.api();
     }
     config() {
-        const MONGODB_CONNECTION = "mongodb://127.0.0.1:27017/hobbyApp";
+        const MONGODB_CONNECTION = "mongodb://stackode:Agptwmdc@ds157631.mlab.com:57631/hobbyapp";
         //use logger middlware
         this.app.use(logger("dev"));
         //use json form parser middlware
