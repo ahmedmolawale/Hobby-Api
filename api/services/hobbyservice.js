@@ -25,11 +25,29 @@ class Service {
             // Store hash in database
             user.password = hash;
             user.save().then((result) => {
-                console.log('User saved successfully.');
-                res.status(201).json({ success: 1, message: 'User saved on server successfully' });
+                if (!result) {
+                    console.log('User already in database.');
+                    res.status(409).json({
+                        status: "fail",
+                        data: null,
+                        message: 'User already exist'
+                    });
+                }
+                else {
+                    console.log('User saved successfully.');
+                    res.status(201).json({
+                        status: "success",
+                        data: null,
+                        message: 'User saved on server successfully'
+                    });
+                }
             }).catch((error) => {
                 console.log('An error occurred due to ' + error);
-                res.status(409).json({ success: 0, message: 'User already exist' });
+                res.status(409).json({
+                    status: "fail",
+                    data: null,
+                    message: 'User already exist.'
+                });
             });
         });
     }
@@ -51,7 +69,11 @@ class Service {
         query.exec().then((result) => {
             if (!result) {
                 console.log('We hava an empty result');
-                res.status(404).json({ success: 0, message: 'No data found.' });
+                res.status(404).json({
+                    success: "fail",
+                    data: null,
+                    message: 'User not found'
+                });
             }
             else {
                 console.log('We got result');
@@ -60,17 +82,31 @@ class Service {
                     if (res1) {
                         // Passwords match
                         result.password = null;
-                        res.status(200).json(result);
+                        let re = { status: "success", data: result, message: "Login Successful" };
+                        res.status(200).json(re);
                     }
                     else {
                         // Passwords don't match
-                        res.status(200).json({ success: 0, message: 'Login Parameter not correct.' });
+                        res.status(200).json({ status: "fail", data: null, message: 'Login Parameter not correct.' });
                     }
                 });
             }
         }).catch((error) => {
             console.error(error);
-            res.status(404).json({ success: 0, message: 'No data found. Ensure Params is appropriately formed.' });
+            res.status(404).json({ status: "fail", data: null, message: 'No data found. Ensure Params is appropriately formed.' });
+        });
+    }
+    static getHobbiesOfUser(userModel, username, res) {
+        userModel.findOne({ username: username }, '-_id -__v', (error, result) => {
+            if (result) {
+                console.log("Hobbies retrieved");
+                result.password = null;
+                res.status(200).json({ status: "success", data: result, message: 'Hobbies retrieved.' });
+            }
+            else {
+                console.log("Hobbies not retrieved");
+                res.status(200).json({ status: "fail", data: null, message: 'Hobbies not retrieved.' });
+            }
         });
     }
     static updateHobbyOfUser(userModel, hobbyModel, username, req, res) {
@@ -83,17 +119,17 @@ class Service {
                 result.save((error, result1) => {
                     if (result1) {
                         console.log("Hobby saved sucessfully");
-                        res.status(200).json({ success: 1, message: 'Hobby saved successfully' });
+                        res.status(200).json({ status: "success", data: null, message: 'Hobby saved successfully' });
                     }
                     else {
                         console.log("Hobby not saved sucessfully");
-                        res.status(402).json({ success: 1, message: 'Hobby not saved' });
+                        res.status(402).json({ status: "fail", data: null, message: 'Hobby not saved' });
                     }
                 });
             }
             else {
                 console.log('User ', username, ' not found');
-                res.status(404).json({ success: 0, message: 'User not found' });
+                res.status(404).json({ status: "fail", data: null, message: 'User not found' });
             }
         });
     }
@@ -101,7 +137,7 @@ class Service {
         userModel.update({ username: username }, { $pull: { hobbies: { _id: hobbyId } } }, { multi: true }, (error, raw) => {
             if (raw) {
                 console.log('Hobby deleted successfully.');
-                res.status(200).json({ success: 1, message: 'Hobby deleted successfully' });
+                res.status(200).json({ status: "success", data: null, message: 'Hobby deleted successfully' });
             }
         });
     }

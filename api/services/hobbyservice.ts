@@ -31,12 +31,32 @@ export class Service {
             // Store hash in database
             user.password = hash;
             user.save().then((result: any) => {
-                console.log('User saved successfully.');
-                res.status(201).json({ success: 1, message: 'User saved on server successfully' });
 
+                if (!result) {
+
+                    console.log('User already in database.');
+                    res.status(409).json({
+                        status: "fail",
+                        data: null,
+                        message: 'User already exist'
+                    });
+
+
+                } else {
+                    console.log('User saved successfully.');
+                    res.status(201).json({
+                        status: "success",
+                        data: null,
+                        message: 'User saved on server successfully'
+                    });
+                }
             }).catch((error: any) => {
                 console.log('An error occurred due to ' + error);
-                res.status(409).json({ success: 0, message: 'User already exist' })
+                res.status(409).json({
+                    status: "fail",
+                    data: null,
+                    message: 'User already exist.'
+                });
             });
 
         });
@@ -60,10 +80,14 @@ export class Service {
         let password: string = queryString['password'].trim();
         const query = userModel.findOne({ username: username }, '-_id -__v');
 
-        query.exec().then((result: IUserModel) => {
+        query.exec().then((result: any) => {
             if (!result) {
                 console.log('We hava an empty result');
-                res.status(404).json({ success: 0, message: 'No data found.' });
+                res.status(404).json({
+                    success: "fail",
+                    data: null,
+                    message: 'User not found'
+                });
 
             } else {
                 console.log('We got result');
@@ -71,24 +95,39 @@ export class Service {
                 bcrypt.compare(password, hashPassword, (err1: any, res1: Response) => {
                     if (res1) {
                         // Passwords match
-                      result.password = null;
-                        res.status(200).json(result);
+                        result.password = null;
+                        let re: Object = { status: "success", data: result, message: "Login Successful" }
+
+                        res.status(200).json(re);
 
                     } else {
                         // Passwords don't match
-                    res.status(200).json({ success: 0, message: 'Login Parameter not correct.' });
+                        res.status(200).json({ status: "fail", data: null, message: 'Login Parameter not correct.' });
                     }
                 });
 
             }
         }).catch((error: any) => {
             console.error(error);
-             res.status(404).json({ success: 0, message: 'No data found. Ensure Params is appropriately formed.' });
-        
+            res.status(404).json({ status: "fail", data: null, message: 'No data found. Ensure Params is appropriately formed.' });
+
         });
     }
-   
-    public static updateHobbyOfUser(userModel: Model<IUserModel>, hobbyModel:Model<IHobbyModel>,username:string,req: Request, res: Response): void {
+    public static getHobbiesOfUser(userModel:Model<IUserModel>,username:string,res:Response){
+           
+            userModel.findOne({ username: username },'-_id -__v', (error: any, result: IUserModel) => {
+                    if (result) {
+                        console.log("Hobbies retrieved");
+                        result.password = null;
+                        res.status(200).json({ status: "success", data: result, message: 'Hobbies retrieved.' });
+                    } else{
+                         console.log("Hobbies not retrieved");
+                        res.status(200).json({ status: "fail", data: null, message: 'Hobbies not retrieved.' });
+                    }
+        });
+    }
+
+    public static updateHobbyOfUser(userModel: Model<IUserModel>, hobbyModel: Model<IHobbyModel>, username: string, req: Request, res: Response): void {
 
         let hobby = new hobbyModel();
         hobby.hobby = req.body.hobby;
@@ -100,29 +139,29 @@ export class Service {
                 result.save((error: any, result1) => {
                     if (result1) {
                         console.log("Hobby saved sucessfully");
-                        res.status(200).json({ success: 1, message: 'Hobby saved successfully' });
+                        res.status(200).json({ status: "success", data: null, message: 'Hobby saved successfully' });
                     } else {
                         console.log("Hobby not saved sucessfully");
-                         res.status(402).json({ success: 1, message: 'Hobby not saved' });
+                        res.status(402).json({ status: "fail", data: null, message: 'Hobby not saved' });
                     }
                 });
             } else {
                 console.log('User ', username, ' not found');
-                res.status(404).json({ success: 0, message: 'User not found' });
+                res.status(404).json({ status: "fail", data: null, message: 'User not found' });
             }
         });
     }
 
-    public static deleteHobbyOfUser(userModel:Model<IUserModel>,username:string,hobbyId:string,res:Response){
+    public static deleteHobbyOfUser(userModel: Model<IUserModel>, username: string, hobbyId: string, res: Response) {
 
-            userModel.update({username:username},
-                            { $pull: { hobbies: { _id: hobbyId } } },
-                { multi: true },(error:any,raw:any)=>{
-                    if(raw){
-                        console.log('Hobby deleted successfully.');
-                        res.status(200).json({success:1,message:'Hobby deleted successfully'});
+        userModel.update({ username: username },
+            { $pull: { hobbies: { _id: hobbyId } } },
+            { multi: true }, (error: any, raw: any) => {
+                if (raw) {
+                    console.log('Hobby deleted successfully.');
+                    res.status(200).json({ status: "success", data: null, message: 'Hobby deleted successfully' });
                 }
-                });
+            });
 
     }
 }

@@ -10,4 +10,4 @@ export const userSchema: Schema = new Schema({
     hobbies:[hobbySchema]
 });
 
-userSchema.index({email:1,username:1},{unique:true});
+userSchema.index({username:1},{unique:true});

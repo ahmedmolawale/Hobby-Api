@@ -9,4 +9,4 @@ exports.userSchema = new mongoose_1.Schema({
     password: { type: String, required: true },
     hobbies: [hobbySchema_1.hobbySchema]
 });
-exports.userSchema.index({ email: 1, username: 1 }, { unique: true });
+exports.userSchema.index({ username: 1 }, { unique: true });
