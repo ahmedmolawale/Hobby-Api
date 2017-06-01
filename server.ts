@@ -17,11 +17,6 @@ import * as bluebirdPromise from 'bluebird';
 import { IUserModel } from "./api/models/user";
 import { Api } from "./api/api";
 
-
-
-
-
-
 export class Server {
 
     public app: Application;
@@ -32,7 +27,6 @@ export class Server {
     public static bootstrap(): Server {
         return new Server();
     }
-
     constructor() {
 
         this.userModel = Object();
@@ -42,7 +36,7 @@ export class Server {
     }
 
     public config(): void {
-        const MONGODB_CONNECTION: string = "mongodb://stackode:Agptwmdc@ds157631.mlab.com:57631/hobbyapp";
+        const MONGODB_CONNECTION: string = "mongodb://stackode:Agptwmdc@ds161041.mlab.com:61041/hobbyapp";
 
 // const MONGODB_CONNECTION: string = "mongodb://127.0.0.1:27017/hobbyapp";
 
