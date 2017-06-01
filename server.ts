@@ -36,7 +36,7 @@ export class Server {
     }
 
     public config(): void {
-        const MONGODB_CONNECTION: string = "mongodb://stackode:Agptwmdc@ds161041.mlab.com:61041/hobbyapp";
+        const MONGODB_CONNECTION: string = "mongodb://ahmedmolawale:Agptwmdc1/2(a+b)h@ds161041.mlab.com:61041/hobbyapp";
 
 // const MONGODB_CONNECTION: string = "mongodb://127.0.0.1:27017/hobbyapp";
 
