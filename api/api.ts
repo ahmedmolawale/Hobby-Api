@@ -19,7 +19,7 @@ export class Api {
             } else if (userData.email == (null || undefined) || userData.username == (null || undefined)
                 || userData.password == (null || undefined)) {
                 console.log('Data of incoming request not complete');
-                res.status(401).json({ status: "fail",data:null, message: 'Cant save data. Data of Incoming request not complete' });
+                res.json({ status: "fail",data:null, message: 'Cant save data. Data of Incoming request not complete' });
             } else {
                 console.log('Calling the POST handler service');
                 Service.addHobbyUser(userModel, req, res);
@@ -36,7 +36,7 @@ export class Api {
             } else if (queryString.password == null || queryString.password == undefined
                 || queryString.username == null || queryString.username == undefined) {
                 console.log('GET: Incoming request params not completed');
-                res.status(401).json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                res.json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
             } else {
                 console.log('Calling the GET handler service');
                 Service.getHobbyUser(userModel, queryString, res);
@@ -50,7 +50,7 @@ export class Api {
             //let queryString = url.parse(req.url, true).query; //get the query string appended to the url
             if (username == (null || undefined)) {
                 console.log('GET: Incoming request params not completed');
-                res.status(401).json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                res.json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
             } else {
                 console.log('Calling the GET handler service');
                 Service.getHobbiesOfUser(userModel,username, res);
@@ -64,12 +64,12 @@ export class Api {
             let userData = req.body;
             if (userData === null || Object.keys(userData).length === 0) {
                 console.log('POST: Incoming request has no body');
-                res.status(404).json({ status:"fail",data:null, message: 'No data sent.' });
+                res.json({ status:"fail",data:null, message: 'No data sent.' });
                 return;
             } else if (username == (null || undefined)
                 || userData.hobby == (null || undefined)) {
                 console.log('Data of incoming request not complete');
-                res.status(401).json({ status: "fail",data:null, message: 'Cant update data. Data of Incoming request not complete' });
+                res.json({ status: "fail",data:null, message: 'Cant update data. Data of Incoming request not complete' });
             } else {
                 console.log('Calling the PUT handler service');
                 Service.updateHobbyOfUser(userModel, hobbyModel, username, req, res);
@@ -82,7 +82,7 @@ export class Api {
             let hobbyId: string = req.params[PARAMS_HOBBY_ID];
             if (username == (null || undefined) || hobbyId == (null || undefined)) {
                 console.log('Username or hobby id not specified');
-                res.status(401).json({ status: "fail",data:null, message: 'Params not specified' });
+                res.json({ status: "fail",data:null, message: 'Params not specified' });
             } else {
                 console.log('Calling Delete handler service');
                 Service.deleteHobbyOfUser(userModel, username, hobbyId, res);

@@ -35,7 +35,7 @@ export class Service {
                 if (!result) {
 
                     console.log('User already in database.');
-                    res.status(409).json({
+                    res.json({
                         status: "fail",
                         data: null,
                         message: 'User already exist'
@@ -52,7 +52,7 @@ export class Service {
                 }
             }).catch((error: any) => {
                 console.log('An error occurred due to ' + error);
-                res.status(409).json({
+                res.json({
                     status: "fail",
                     data: null,
                     message: 'User already exist.'
@@ -83,7 +83,7 @@ export class Service {
         query.exec().then((result: any) => {
             if (!result) {
                 console.log('We hava an empty result');
-                res.status(404).json({
+                res.json({
                     success: "fail",
                     data: null,
                     message: 'User not found'
@@ -102,14 +102,14 @@ export class Service {
 
                     } else {
                         // Passwords don't match
-                        res.status(200).json({ status: "fail", data: null, message: 'Login Parameter not correct.' });
+                        res.json({ status: "fail", data: null, message: 'Login Parameter not correct.' });
                     }
                 });
 
             }
         }).catch((error: any) => {
             console.error(error);
-            res.status(404).json({ status: "fail", data: null, message: 'No data found. Ensure Params is appropriately formed.' });
+            res.json({ status: "fail", data: null, message: 'No data found. Ensure Params is appropriately formed.' });
 
         });
     }
@@ -122,7 +122,7 @@ export class Service {
                         res.status(200).json({ status: "success", data: result, message: 'Hobbies retrieved.' });
                     } else{
                          console.log("Hobbies not retrieved");
-                        res.status(200).json({ status: "fail", data: null, message: 'Hobbies not retrieved.' });
+                        res.json({ status: "fail", data: null, message: 'Hobbies not retrieved.' });
                     }
         });
     }
@@ -142,12 +142,12 @@ export class Service {
                         res.status(200).json({ status: "success", data: null, message: 'Hobby saved successfully' });
                     } else {
                         console.log("Hobby not saved sucessfully");
-                        res.status(402).json({ status: "fail", data: null, message: 'Hobby not saved' });
+                        res.json({ status: "fail", data: null, message: 'Hobby not saved' });
                     }
                 });
             } else {
                 console.log('User ', username, ' not found');
-                res.status(404).json({ status: "fail", data: null, message: 'User not found' });
+                res.json({ status: "fail", data: null, message: 'User not found' });
             }
         });
     }
