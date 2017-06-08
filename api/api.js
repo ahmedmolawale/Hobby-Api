@@ -27,13 +27,13 @@ class Api {
             if (Object.keys(queryString).length === 0) {
                 console.log('GET: Incoming request has no params');
                 // res.json({ status: "fail",data:null, message: 'Cant retrieve Data. No params provided' });
-                res.json({ data: null });
+                res.json({ status: "fail", data: null, message: "Incoming request has no params" });
                 return;
             }
             else if (queryString.password == null || queryString.password == undefined
                 || queryString.username == null || queryString.username == undefined) {
                 console.log('GET: Incoming request params not completed');
-                //res.json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                res.json({ status: "fail", data: null, message: 'Cant retrieve Data. Complete Params not specified!' });
                 res.json({ data: null });
             }
             else {
@@ -47,7 +47,7 @@ class Api {
             if (username == (null || undefined)) {
                 console.log('GET: Incoming request params not completed');
                 //res.json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
-                res.json({ data: null });
+                res.json({ status: "fail", data: null, message: "Incoming Params not complete" });
             }
             else {
                 console.log('Calling the GET handler service');
