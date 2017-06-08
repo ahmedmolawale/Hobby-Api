@@ -82,8 +82,7 @@ class Service {
                     if (res1) {
                         // Passwords match
                         result.password = null;
-                        let re = { status: "success", data: result, message: "Login Successful" };
-                        res.status(200).json(re);
+                        res.status(200).json({ status: "success", data: result, message: "Login Successful" });
                     }
                     else {
                         // Passwords don't match

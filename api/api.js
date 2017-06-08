@@ -9,7 +9,7 @@ class Api {
             let userData = req.body;
             if (userData === null || Object.keys(userData).length === 0) {
                 console.log('POST: Incoming request has no body');
-                res.status(404).json({ status: "fail", data: null, message: 'No data sent.' });
+                res.json({ status: "fail", data: null, message: 'No data sent.' });
                 return;
             }
             else if (userData.email == (null || undefined) || userData.username == (null || undefined)
@@ -26,13 +26,15 @@ class Api {
             let queryString = url.parse(req.url, true).query; //get the query string appended to the url
             if (Object.keys(queryString).length === 0) {
                 console.log('GET: Incoming request has no params');
-                res.status(401).json({ status: "fail", data: null, message: 'Cant retrieve Data. No params provided' });
+                // res.json({ status: "fail",data:null, message: 'Cant retrieve Data. No params provided' });
+                res.json({ data: null });
                 return;
             }
             else if (queryString.password == null || queryString.password == undefined
                 || queryString.username == null || queryString.username == undefined) {
                 console.log('GET: Incoming request params not completed');
-                res.json({ status: "fail", data: null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                //res.json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                res.json({ data: null });
             }
             else {
                 console.log('Calling the GET handler service');
@@ -42,10 +44,10 @@ class Api {
         router.get('/api/hobby/:username', (req, res) => {
             const PARAMS_USERNAME = 'username';
             let username = req.params[PARAMS_USERNAME];
-            //let queryString = url.parse(req.url, true).query; //get the query string appended to the url
             if (username == (null || undefined)) {
                 console.log('GET: Incoming request params not completed');
-                res.json({ status: "fail", data: null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                //res.json({ status: "fail",data:null, message: 'Cant retrieve Data. Complete Params not specified!' });
+                res.json({ data: null });
             }
             else {
                 console.log('Calling the GET handler service');
