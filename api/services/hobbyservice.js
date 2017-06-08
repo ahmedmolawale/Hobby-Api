@@ -70,7 +70,7 @@ class Service {
             if (!result) {
                 console.log('We hava an empty result');
                 res.json({
-                    success: "fail",
+                    status: "fail",
                     data: null,
                     message: 'User not found'
                 });
